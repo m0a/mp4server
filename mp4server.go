@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"html/template"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -38,9 +39,7 @@ func filesHandler(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Fprintf(w, "<html>")
 	for _, finfo := range list {
-		// if finfo.IsDir() || strings.Index(finfo.Name(), ".mp4") == -1 {
-		// 	continue
-		// }
+
 		realPath := nextPath + "/" + finfo.Name()
 		fmt.Printf("realPath=%s\n", realPath)
 		if finfo.IsDir() {
@@ -51,16 +50,6 @@ func filesHandler(w http.ResponseWriter, r *http.Request) {
 
 	}
 
-	// str := `
-	// <form action="http://localhost:9999/thumbnail" method="post" enctype="multipart/form-data">
-	// <label for="file">Filename:</label>
-	// <input type="file" name="file" id="file">
-	// <input type="submit" name="submit" value="Submit">
-	// </form>
-	// `
-	//
-	// fmt.Fprintf(w, "%s", str)
-	//
 	fmt.Fprintf(w, "</html>")
 
 }
@@ -98,8 +87,12 @@ func rootHandler(w http.ResponseWriter, r *http.Request) {
 	//
 	// fmt.Fprintf(w, "%s", str)
 	//
-	fmt.Fprintf(w, "</html>")
+	// fmt.Fprintf(w, "</html>")
 
+}
+
+type PlayData struct {
+	Filename string
 }
 
 func playHandler(w http.ResponseWriter, r *http.Request) {
@@ -109,23 +102,31 @@ func playHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("filename=%s\n", filename)
 	//				poster="http://video-js.zencoder.com/oceans-clip.png"
 
-	playhtml := `
-	<html>
-		<head>
-		<link href="//vjs.zencdn.net/4.12/video-js.css" rel="stylesheet">
-		<script src="//vjs.zencdn.net/4.12/video.js"></script>
-		</head>
-		<body>
-		<video id="example_video_1" class="video-js vjs-default-skin"
-			controls preload="auto" width="1024" height="768"
-				data-setup='{"example_option":true}'>
-				<source src="/access/` + filename + `" type='video/mp4' />
-				<p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
-				</video>
-		</body>
-	</html>
-	`
-	fmt.Fprint(w, playhtml)
+	tpl, err := template.ParseFiles("assets/mp4play.html")
+	if err != nil {
+		http.Error(w, "Server Error", http.StatusInternalServerError)
+	}
+
+	playData := PlayData{filename}
+	tpl.Execute(w, playData)
+	//
+	// playhtml := `
+	// <html>
+	// 	<head>
+	// 	<link href="//vjs.zencdn.net/4.12/video-js.css" rel="stylesheet">
+	// 	<script src="//vjs.zencdn.net/4.12/video.js"></script>
+	// 	</head>
+	// 	<body>
+	// 	<video id="example_video_1" class="video-js vjs-default-skin"
+	// 		controls preload="auto" width="1024" height="768"
+	// 			data-setup='{"example_option":true}'>
+	// 			<source src="/access/` + filename + `" type='video/mp4' />
+	// 			<p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+	// 			</video>
+	// 	</body>
+	// </html>
+	// `
+	// fmt.Fprint(w, playhtml)
 
 }
 
