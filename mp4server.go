@@ -16,6 +16,7 @@ func main() {
 	fmt.Println("run Server")
 
 	http.Handle("/access/", http.StripPrefix("/access/", http.FileServer(http.Dir("."))))
+	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(assetFS())))
 	// http.HandleFunc("/thumbnail", thumbnailHandler)
 	http.HandleFunc("/play/", playHandler)
 	http.HandleFunc("/", rootHandler)
