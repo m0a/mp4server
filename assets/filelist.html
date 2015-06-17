@@ -16,7 +16,7 @@
 	</head>
 	<body>
 		<div class="container">
-		{{len .}} 個のリスト<br>
+		{{len .}} ファイル(フォルダ含む)<br>
 		{{range $index, $file :=.}}
 			<a href='/{{$file.PathPrefix}}/{{$file.RealPath}}'>{{$file.FileName}}</a><br>
 		{{end}}

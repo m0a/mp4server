@@ -1,16 +1,27 @@
-<html>
+<html lang="en">
 	<head>
-	<link href="//vjs.zencdn.net/4.12/video-js.css" rel="stylesheet">
-	<script src="//vjs.zencdn.net/4.12/video.js"></script>
+		<meta charset="utf-8">
+				<!-- This file has been downloaded from Bootsnipp.com. Enjoy! -->
+				<title>List Grid View - Bootsnipp.com</title>
+						<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- Bootstrap core CSS -->
+		<link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<link href="/assets/custom.css" rel="stylesheet">
+		<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+		<link href="//vjs.zencdn.net/4.12/video-js.css" rel="stylesheet">
+		<script src="//vjs.zencdn.net/4.12/video.js"></script>
+
 	</head>
 	<body>
-
-	<h1>{{.Filename}}</h1>
-	<video id="example_video_1" class="video-js vjs-default-skin"
-		controls preload="auto" width="800" height="600"
-			data-setup='{"example_option":true}'>
-			<source src="/access/{{.Filename}}" type='video/mp4' />
-			<p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+		<div class="container">
+			<h1>{{.Filename}}</h1>
+			<video id="example_video_1" class="video-js vjs-default-skin"
+				controls preload="auto" width="800" height="600"
+				data-setup='{"example_option":true}'>
+				<source src="/access/{{.Filename}}" type='video/mp4' />
+				<p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
 			</video>
+	 </div>
 	</body>
 </html>
