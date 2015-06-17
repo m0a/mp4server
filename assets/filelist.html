@@ -18,7 +18,18 @@
 		<div class="container">
 		{{len .}} ファイル(フォルダ含む)<br>
 		{{range $index, $file :=.}}
-			<a href='/{{$file.PathPrefix}}/{{$file.RealPath}}'>{{$file.FileName}}</a><br>
+			<div class="media">
+	  		<div class="media-left">
+					<a href='/{{$file.PathPrefix}}/{{$file.RealPath}}'>
+	      		<video class="media-object" alt="120x64" src="/access/{{$file.RealPath}}" data-holder-rendered="true" style="width: 120px; height: 64px;">
+	    		</a>
+	  		</div>
+	  		<div class="media-body">
+	    		<h4 class="media-heading">{{$file.FileName}}</h4>
+					<small>ファイルサイズ：XXXXXXXX bytes　<br>
+					更新日時: XXXXXXXXXX <br></small>
+	  		</div>
+			</div>
 		{{end}}
 	</div>
 	</body>
