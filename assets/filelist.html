@@ -1,10 +1,25 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 	<head>
+		<meta charset="utf-8">
+				<!-- This file has been downloaded from Bootsnipp.com. Enjoy! -->
+				<title>List Grid View - Bootsnipp.com</title>
+						<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- Bootstrap core CSS -->
+		<link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<link href="/assets/custom.css" rel="stylesheet">
+
+		<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+		<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+
 	</head>
 	<body>
+		<div class="container">
 		{{len .}} 個のリスト<br>
 		{{range $index, $file :=.}}
 			<a href='/{{$file.PathPrefix}}/{{$file.RealPath}}'>{{$file.FileName}}</a><br>
 		{{end}}
+	</div>
 	</body>
 </html>
