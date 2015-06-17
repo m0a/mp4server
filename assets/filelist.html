@@ -1,3 +1,4 @@
+<html>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -7,30 +8,29 @@
 						<meta name="viewport" content="width=device-width, initial-scale=1">
 
 		<!-- Bootstrap core CSS -->
-		<link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-		<link href="/assets/custom.css" rel="stylesheet">
+		<link href="./bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<link href="./custom.css" rel="stylesheet">
 
+		<!-- Custom styles for this template -->
+		<!-- <link href="grid.css" rel="stylesheet"> -->
+
+		<!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+		<!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+		<!-- // <script src="../../assets/js/ie-emulation-modes-warning.js"></script> -->
+
+		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+			<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
 		<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-		<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+		<script src="./bootstrap/js/bootstrap.min.js"></script>
 
 	</head>
 	<body>
-		<div class="container">
-		{{len .}} ファイル(フォルダ含む)<br>
+		{{len .}} 個のリスト<br>
 		{{range $index, $file :=.}}
-			<div class="media">
-	  		<div class="media-left">
-					<a href='/{{$file.PathPrefix}}/{{$file.RealPath}}'>
-	      		<video class="media-object" alt="120x64" src="/access/{{$file.RealPath}}" data-holder-rendered="true" style="width: 120px; height: 64px;">
-	    		</a>
-	  		</div>
-	  		<div class="media-body">
-	    		<h4 class="media-heading">{{$file.FileName}}</h4>
-					<small>ファイルサイズ：XXXXXXXX bytes　<br>
-					更新日時: XXXXXXXXXX <br></small>
-	  		</div>
-			</div>
+			<a href='/{{$file.PathPrefix}}/{{$file.RealPath}}'>{{$file.FileName}}</a><br>
 		{{end}}
-	</div>
 	</body>
 </html>
