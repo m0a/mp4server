@@ -27,6 +27,15 @@ func main() {
 	}
 }
 
+func ParseAssets(path string) (*template.Template, error) {
+	src, err := Asset(path)
+	if err != nil {
+		return nil, err
+	}
+	ccc := template.New(path)
+	return ccc.Parse(string(src))
+}
+
 type FileList struct {
 	RealPath   string
 	FileName   string
@@ -64,7 +73,7 @@ func filesHandler(w http.ResponseWriter, r *http.Request) {
 	pp.Println(fileList)
 	//fmt.Fprintf(w, "</html>")
 
-	tpl, err := template.ParseFiles("assets/filelist.html")
+	tpl, err := ParseAssets("assets/filelist.html")
 	if err != nil {
 		http.Error(w, "Server Error", http.StatusInternalServerError)
 	}
@@ -99,7 +108,7 @@ func rootHandler(w http.ResponseWriter, r *http.Request) {
 	pp.Println(fileList)
 	//fmt.Fprintf(w, "</html>")
 
-	tpl, err := template.ParseFiles("assets/filelist.html")
+	tpl, err := ParseAssets("assets/filelist.html")
 	if err != nil {
 		http.Error(w, "Server Error", http.StatusInternalServerError)
 	}
@@ -131,7 +140,7 @@ func playHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("filename=%s\n", filename)
 	//				poster="http://video-js.zencoder.com/oceans-clip.png"
 
-	tpl, err := template.ParseFiles("assets/mp4play.html")
+	tpl, err := ParseAssets("assets/mp4play.html")
 	if err != nil {
 		http.Error(w, "Server Error", http.StatusInternalServerError)
 	}
