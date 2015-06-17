@@ -8,6 +8,8 @@ import (
 	"net/http"
 	"os"
 	"strings"
+
+	"github.com/k0kubun/pp"
 )
 
 func main() {
@@ -25,11 +27,17 @@ func main() {
 	}
 }
 
+type FileList struct {
+	RealPath   string
+	FileName   string
+	PathPrefix string
+}
+
 func filesHandler(w http.ResponseWriter, r *http.Request) {
 	//fmt.Println(r.URL.Path)
 	//fmt.Fprintf(w, "[%s]", strings.Trim(r.URL.Path, "/files/"))
 	nextPath := strings.TrimPrefix(r.URL.Path, "/files/")
-	fmt.Printf("nextPath=%s\n", nextPath)
+	// fmt.Printf("nextPath=%s\n", nextPath)
 
 	list, err := ioutil.ReadDir("./" + nextPath)
 	if err != nil {
@@ -37,20 +45,31 @@ func filesHandler(w http.ResponseWriter, r *http.Request) {
 		os.Exit(1)
 	}
 
-	fmt.Fprintf(w, "<html>")
+	fileList := []FileList{}
+
+	//fmt.Fprintf(w, "<html>")
 	for _, finfo := range list {
 
 		realPath := nextPath + "/" + finfo.Name()
-		fmt.Printf("realPath=%s\n", realPath)
+		// fmt.Printf("realPath=%s\n", realPath)
 		if finfo.IsDir() {
-			fmt.Fprintf(w, "<a href='/files/%s'>%s/</a><br>", realPath, finfo.Name())
+			fileList = append(fileList, FileList{RealPath: realPath, FileName: finfo.Name() + "/", PathPrefix: "files"})
 		} else if strings.Index(finfo.Name(), ".mp4") > 0 {
-			fmt.Fprintf(w, "<a href='/play/%s'>%s</a><br>", realPath, finfo.Name())
+			fileList = append(fileList, FileList{RealPath: realPath, FileName: finfo.Name(), PathPrefix: "play"})
 		}
 
 	}
 
-	fmt.Fprintf(w, "</html>")
+	// fmt.Println(fileList)
+	pp.Println(fileList)
+	//fmt.Fprintf(w, "</html>")
+
+	tpl, err := template.ParseFiles("assets/filelist.html")
+	if err != nil {
+		http.Error(w, "Server Error", http.StatusInternalServerError)
+	}
+
+	tpl.Execute(w, fileList)
 
 }
 
@@ -64,18 +83,28 @@ func rootHandler(w http.ResponseWriter, r *http.Request) {
 		os.Exit(1)
 	}
 
-	fmt.Fprintf(w, "<html>")
+	fileList := []FileList{}
+	// fmt.Fprintf(w, "<html>")
 	for _, finfo := range list {
 		// if finfo.IsDir() || strings.Index(finfo.Name(), ".mp4") == -1 {
 		// 	continue
 		// }
 		if finfo.IsDir() {
-			fmt.Fprintf(w, "<a href='/files/%s'>%s/</a><br>", finfo.Name(), finfo.Name())
+			fileList = append(fileList, FileList{RealPath: finfo.Name(), FileName: finfo.Name() + "/", PathPrefix: "files"})
 		} else if strings.Index(finfo.Name(), ".mp4") > 0 {
-			fmt.Fprintf(w, "<a href='/play/%s'>%s</a><br>", finfo.Name(), finfo.Name())
+			fileList = append(fileList, FileList{RealPath: finfo.Name(), FileName: finfo.Name(), PathPrefix: "play"})
 		}
 
 	}
+	pp.Println(fileList)
+	//fmt.Fprintf(w, "</html>")
+
+	tpl, err := template.ParseFiles("assets/filelist.html")
+	if err != nil {
+		http.Error(w, "Server Error", http.StatusInternalServerError)
+	}
+
+	tpl.Execute(w, fileList)
 
 	// str := `
 	// <form action="http://localhost:9999/thumbnail" method="post" enctype="multipart/form-data">

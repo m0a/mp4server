@@ -1,0 +1,10 @@
+<html>
+	<head>
+	</head>
+	<body>
+		{{len .}} 個のリスト<br>
+		{{range $index, $file :=.}}
+			<a href='/{{$file.PathPrefix}}/{{$file.RealPath}}'>{{$file.FileName}}</a><br>
+		{{end}}
+	</body>
+</html>
